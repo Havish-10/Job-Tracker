@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-briefcase"></i>
+                <h1>Job Tracker</h1>
+            </div>
+            <button id="addJobBtn" class="btn-primary">
+                <i class="fa-solid fa-plus"></i> Add Application
+            </button>
+        </header>
+
+        <main>
+            <section class="stats-grid">
+                <div class="stat-card glass">
+                    <div class="icon-box total">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Applications</h3>
+                        <p id="totalStats">0</p>
+                    </div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="icon-box applied">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Applied</h3>
+                        <p id="appliedStats">0</p>
+                    </div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="icon-box interviewing">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Interviewing</h3>
+                        <p id="interviewingStats">0</p>
+                    </div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="icon-box offer">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Offers</h3>
+                        <p id="offerStats">0</p>
+                    </div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="icon-box rejected">
+                        <i class="fa-solid fa-times-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Rejected</h3>
+                        <p id="rejectedStats">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="jobs-section glass">
+                <div class="section-header">
+                    <h2>Recent Applications</h2>
+                    <div class="search-bar">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search by company or position...">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="jobsTable">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Position</th>
+                                <th>Status</th>
+                                <th>Date Applied</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobsList">
+                            <!-- Jobs will be here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="jobModal" class="modal">
+        <div class="modal-content glass">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Add New Application</h2>
+            <form id="jobForm">
+                <input type="hidden" id="jobId">
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" required placeholder="e.g. Google">
+                </div>
+                <div class="form-group">
+                    <label for="position">Position</label>
+                    <input type="text" id="position" required placeholder="e.g. Software Engineer">
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option value="Applied">Applied</option>
+                        <option value="Interviewing">Interviewing</option>
+                        <option value="Offer">Offer</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dateApplied">Date Applied</label>
+                    <input type="date" id="dateApplied" required>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" rows="3" placeholder="Any additional details..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary full-width">Save Application</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
