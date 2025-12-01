@@ -28,7 +28,26 @@ async function checkAuth() {
         const res = await fetch(`${API_URL}/user`);
         if (res.status === 401) {
             window.location.href = '/login.html';
+            return;
         }
+
+        const user = await res.json();
+
+        // Render Avatar
+        const avatarImg = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+
+        if (user.avatar) {
+            avatarImg.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+        } else {
+            // Default Discord Avatar
+            const discriminator = user.discriminator || 0;
+            avatarImg.src = `https://cdn.discordapp.com/embed/avatars/${discriminator % 5}.png`;
+        }
+
+        avatarImg.style.display = 'block';
+        userName.textContent = user.username;
+
     } catch (error) {
         console.error('Error checking auth:', error);
         window.location.href = '/login.html';
