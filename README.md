@@ -2,8 +2,28 @@
 Job Application Tracking App - Personal Project.
 
 ## Setup
-Setup the dependencies by running `npm install`
-Start the server by running `npm start`
+1.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+
+2.  **Configure Environment Variables**:
+    -   Create a `.env` file in the root directory.
+    -   Copy the contents of `.env.example` into `.env`.
+    -   **Discord OAuth Setup**:
+        -   Create an application at the [Discord Developer Portal](https://discord.com/developers/applications).
+        -   Get your `Client ID` and `Client Secret`.
+        -   Add `http://localhost:3000/auth/discord/callback` as a Redirect URI.
+        -   Fill in the `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET` in your `.env` file.
+    -   **Session Secret**:
+        -   Add a random string for `SESSION_SECRET` (e.g., `openssl rand -hex 32`).
+
+3.  **Start the Server**:
+    ```bash
+    npm start
+    ```
+4.  **Login**:
+    -   Navigate to `http://localhost:3000` and login with Discord.
 
 ## Home Page
 - A premium dashboard greeting you with your application statistics.
@@ -20,7 +40,7 @@ Start the server by running `npm start`
 - If I had to do this again, I would probably use a frontend framework like React or Vue instead of Vanilla JS to manage the state better.
 
 ## Future Features
-- User Authentication so you can actually keep your data private.
+- [x] User Authentication (Discord OAuth)
 - File uploads to attach specific resumes or cover letters to each application.
 - A "Kanban" drag-and-drop board for moving jobs between statuses.
 - Email notifications for upcoming interviews.
@@ -37,6 +57,12 @@ Start the server by running `npm start`
 - Hardcoded some colors in the JS instead of pulling from CSS variables.
 
 ## Server Routes
+### Auth
+-   `/auth/discord` - Initiate Discord OAuth login
+-   `/auth/discord/callback` - Discord OAuth callback
+-   `/logout` - Logout user
+-   `/api/user` - Get current authenticated user
+
 ### GET
 - `/api/jobs` - Fetch all jobs
 - `/api/stats` - Get application statistics

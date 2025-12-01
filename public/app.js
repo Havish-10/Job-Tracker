@@ -14,12 +14,26 @@ const API_URL = '/api';
 
 // Initialize DOM
 document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
     fetchStats();
     fetchJobs();
 
     // Set default date to today
     document.getElementById('dateApplied').valueAsDate = new Date();
 });
+
+// Check Auth
+async function checkAuth() {
+    try {
+        const res = await fetch(`${API_URL}/user`);
+        if (res.status === 401) {
+            window.location.href = '/login.html';
+        }
+    } catch (error) {
+        console.error('Error checking auth:', error);
+        window.location.href = '/login.html';
+    }
+}
 
 // Fetch Stats
 async function fetchStats() {
