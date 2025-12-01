@@ -59,14 +59,16 @@ function renderJobs(jobsToRender) {
 
     jobsToRender.forEach(job => {
         const tr = document.createElement('tr');
+        tr.onclick = () => editJob(job.id); // Row click opens modal
+
         tr.innerHTML = `
             <td><strong>${job.company}</strong></td>
             <td>${job.position}</td>
             <td><span class="status-badge status-${job.status}">${job.status}</span></td>
             <td>${job.dateApplied}</td>
             <td>
-                <button class="action-btn edit" onclick="editJob(${job.id})"><i class="fa-solid fa-pen"></i></button>
-                <button class="action-btn delete" onclick="deleteJob(${job.id})"><i class="fa-solid fa-trash"></i></button>
+                <button class="action-btn edit" onclick="event.stopPropagation(); editJob(${job.id})"><i class="fa-solid fa-pen"></i></button>
+                <button class="action-btn delete" onclick="event.stopPropagation(); deleteJob(${job.id})"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         jobsList.appendChild(tr);
