@@ -15,6 +15,11 @@ Job Application Tracking App - Personal Project.
         -   Get your `Client ID` and `Client Secret`.
         -   Add `http://localhost:3000/auth/discord/callback` as a Redirect URI.
         -   Fill in the `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET` in your `.env` file.
+    -   **MailerSend Setup (Email Reminders)**:
+        -   Sign up at [MailerSend](https://www.mailersend.com/).
+        -   Verify your sending domain.
+        -   Generate an API Token.
+        -   Add `MAILERSEND_API_KEY` and `MAILERSEND_FROM_EMAIL` to your `.env` file.
     -   **Session Secret**:
         -   Add a random string for `SESSION_SECRET` (e.g., `openssl rand -hex 32`).
 
@@ -25,25 +30,20 @@ Job Application Tracking App - Personal Project.
 4.  **Login**:
     -   Navigate to `http://localhost:3000` and login with Discord.
 
-## Home Page
-- A premium dashboard greeting you with your application statistics.
-- Cards at the top show the breakdown of your applications (Applied, Interviewing, Offers, etc.).
-- A "Add Application" button that opens a sleek modal to log a new job.
-- A main table displaying all your current applications.
-- Users can search for specific companies or positions using the search bar.
-- You can edit the status of an application or delete it entirely if you get rejected (or accepted!).
-- The design features a modern "Glassmorphism" aesthetic with animated background blobs.
-
-## Granted more time
-- I focused a lot on the visual design to make it look "premium", which meant I spent less time on advanced features like authentication.
-- If I had planned better, I would have implemented a Kanban board view, which would feel more interactive than a simple list.
-- If I had to do this again, I would probably use a frontend framework like React or Vue instead of Vanilla JS to manage the state better.
+## Features
+- **User Authentication**: Secure login via Discord OAuth.
+- **Profile Display**: Shows your Discord avatar and username.
+- **Email Reminders**: Customizable reminders (Daily, Weekly, Custom) sent via MailerSend.
+- **Dashboard**: A premium dashboard greeting you with your application statistics.
+- **Job Management**: Add, edit, and delete job applications.
+- **Search**: Filter applications by company or position.
+- **Responsive Design**: Modern "Glassmorphism" aesthetic.
 
 ## Future Features
 - [x] User Authentication (Discord OAuth)
+- [x] Email Reminders
 - File uploads to attach specific resumes or cover letters to each application.
 - A "Kanban" drag-and-drop board for moving jobs between statuses.
-- Email notifications for upcoming interviews.
 - Mobile-responsive improvements.
 
 ## Storage
@@ -62,6 +62,11 @@ Job Application Tracking App - Personal Project.
 -   `/auth/discord/callback` - Discord OAuth callback
 -   `/logout` - Logout user
 -   `/api/user` - Get current authenticated user
+
+### User Settings
+-   `GET /api/user/settings` - Get reminder preferences
+-   `PUT /api/user/settings` - Update reminder preferences
+-   `GET /test-email` - Manually trigger email reminder check (for testing)
 
 ### GET
 - `/api/jobs` - Fetch all jobs

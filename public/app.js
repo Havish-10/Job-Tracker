@@ -40,9 +40,18 @@ async function checkAuth() {
         if (user.avatar) {
             avatarImg.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
         } else {
-            // Default Discord Avatar
-            const discriminator = user.discriminator || 0;
-            avatarImg.src = `https://cdn.discordapp.com/embed/avatars/${discriminator % 5}.png`;
+            let avatarUrl;
+            if (user.avatar) {
+                avatarUrl = `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png`;
+            } else if (user.discriminator === '0') {
+                // New Discord username system: (userId >> 22) % 6
+                const defaultAvatarIndex = Number((BigInt(user.discordId) >> 22n) % 6n);
+                avatarUrl = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`;
+            } else {
+                // Legacy system
+                avatarUrl = `https://cdn.discordapp.com/embed/avatars/${(user.discriminator || 0) % 5}.png`;
+            }
+            avatarImg.src = avatarUrl;
         }
 
         avatarImg.style.display = 'block';
@@ -202,7 +211,94 @@ window.editJob = (id) => {
     }
 };
 
-// Delete Job
+// ... (existing code)
+
+// Settings Modal
+const settingsModal = document.getElementById('settingsModal');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsCloseBtn = document.querySelector('.settings-close');
+const settingsForm = document.getElementById('settingsForm');
+const reminderFrequency = document.getElementById('reminderFrequency');
+const customDatesGroup = document.getElementById('customDatesGroup');
+
+settingsBtn.onclick = () => {
+    openSettingsModal();
+};
+
+settingsCloseBtn.onclick = () => {
+    settingsModal.style.display = 'none';
+};
+
+window.onclick = (e) => {
+    if (e.target == jobModal) {
+        closeModal();
+    }
+    if (e.target == settingsModal) {
+        settingsModal.style.display = 'none';
+    }
+};
+
+reminderFrequency.onchange = () => {
+    if (reminderFrequency.value === 'custom') {
+        customDatesGroup.style.display = 'block';
+    } else {
+        customDatesGroup.style.display = 'none';
+    }
+};
+
+async function openSettingsModal() {
+    settingsModal.style.display = 'flex';
+    try {
+        const res = await fetch(`${API_URL}/user/settings`);
+        const data = await res.json();
+
+        reminderFrequency.value = data.reminderFrequency;
+
+        if (data.reminderFrequency === 'custom') {
+            customDatesGroup.style.display = 'block';
+            const days = data.customDates || [];
+            document.querySelectorAll('input[name="customDay"]').forEach(cb => {
+                cb.checked = days.includes(cb.value);
+            });
+        } else {
+            customDatesGroup.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error fetching settings:', error);
+    }
+}
+
+settingsForm.onsubmit = async (e) => {
+    e.preventDefault();
+
+    const frequency = reminderFrequency.value;
+    let customDates = [];
+
+    if (frequency === 'custom') {
+        document.querySelectorAll('input[name="customDay"]:checked').forEach(cb => {
+            customDates.push(cb.value);
+        });
+    }
+
+    try {
+        await fetch(`${API_URL}/user/settings`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                reminderFrequency: frequency,
+                customDates: customDates
+            })
+        });
+
+        settingsModal.style.display = 'none';
+        alert('Settings saved!');
+    } catch (error) {
+        console.error('Error saving settings:', error);
+        alert('Failed to save settings.');
+    }
+};
+
+// ... (existing deleteJob function)
 window.deleteJob = async (id) => {
     if (confirm('Are you sure you want to delete this application?')) {
         try {
